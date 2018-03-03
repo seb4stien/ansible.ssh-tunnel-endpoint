@@ -1,0 +1,12 @@
+- name: Add user
+  user:
+    name: tunnel-{{ origin }}
+    shell: /bin/bash
+    createhome: yes
+
+- name: Set key
+  authorized_key:
+    user: tunnel-{{ origin }}
+    state: present
+    key: "{{ lookup('file', 'files/keys/id_rsa.' + origin + '.pub') }}"
+    key_options: command="echo 'Tunnel'",no-X11-forwarding,no-agent-forwarding,no-pty
